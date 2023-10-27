@@ -9,8 +9,8 @@
       return{
         todoText: '',//text입력시 바뀔 값
         todos: [
-          {id: 1, text:'앨범사기', checked: false},
-          {id: 2, text:'스밍돌리기', checked: false}
+          {id: 1, text:'앨범사기', checked: false, mode: 'view'},
+          {id: 2, text:'스밍돌리기', checked: false, mode: 'edit'}
         ]
 
       }
@@ -21,7 +21,8 @@
         this.todos.push({
           id: Math.random(), 
           text: e.target.value, 
-          checked: false
+          checked: false,
+          mode: 'view'
         });
         this.todoText ='';
       },
@@ -34,6 +35,10 @@
           const idx = this.todos.findIndex(todo => todo.id === id);
           this.todos.splice(idx,1);
         }
+      },
+      toggleMode({id,mode}){
+        const idx = this.todos.findIndex(todo => todo.id === id);
+        this.todos[idx].mode = mode;
       }
     }
   }
@@ -55,7 +60,14 @@
       >
     </div>
     <hr>
-    <Todo v-for="todo in todos" :key="todo.id" :todo="todo" @toggle-checkbox="toggleCheck" @click-delete="deleteTodo"/>
+    <Todo 
+      v-for="todo in todos" 
+      :key="todo.id" 
+      :todo="todo" 
+      @toggle-checkbox="toggleCheck" 
+      @click-delete="deleteTodo"
+      @toggle-mode="toggleMode"
+    />
     
   </div><!--container-->
 </template>
